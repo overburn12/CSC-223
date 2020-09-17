@@ -35,6 +35,6 @@ int main(){
     cout << setw(RightJustifyOffset) << "Shipping: $" << ShippingCost << endl;
     cout << setw(RightJustifyOffset) << "Grand Total: $" << PurchaseAmount+TaxPaid+ShippingCost << endl;
     
-    cout << "Thank you for choosing " << BuisnessName << "\nHave a nice day!\n" << endl;
+    cout << "Thank you for choosing " << BuisnessName << "\nHave a wonderful day!\n" << endl;
     return 0;
 }
