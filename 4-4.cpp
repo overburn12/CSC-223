@@ -24,38 +24,37 @@ int main(){
     int Dist3Yes=0, Dist3No=0;
     char cTempVote;
     int TempDistrict;
-    bool VotedYes;
-    ifstream InFile("votes.dat");
+    ifstream InFile ("votes.dat");
 
     while(!InFile.eof()){
         InFile >> TempDistrict >> cTempVote;
-        if(cTempVote!='Y' && cTempVote!='N') 
+        if(InFile.eof())
             break;
-        if(cTempVote == 'Y' || cTempVote=='y'){
+        if(cTempVote=='Y'){
             switch(TempDistrict){
-            case 1:
-                Dist1Yes++;
-                break;
-            case 2:
-                Dist2Yes++;
-                break;
-            case 3:
-                Dist3Yes++;
-                break;
-            default:
+                case 1:
+                    Dist1Yes++;
+                    break;
+                case 2:
+                    Dist2Yes++;
+                    break;
+                case 3:
+                    Dist3Yes++;
+                    break;
+                default: cout << "error!\n";
             }
         }else{
             switch(TempDistrict){
-            case 1:
-                Dist1No++;
-                break;
-            case 2:
-                Dist2No++;
-                break;
-            case 3:
-                Dist3No++;
-                break;
-            default:
+                case 1:
+                    Dist1No++;
+                    break;
+                case 2:
+                    Dist2No++;
+                    break;
+                case 3:
+                    Dist3No++;
+                    break;
+                default: cout << "error!\n";
             }
         }
     }
