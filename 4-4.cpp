@@ -19,73 +19,62 @@
 using namespace std;
 
 int main(){
-    //Arrays or vectors would be best here
-    //but this project is to use switch cases
     int Dist1Yes=0, Dist1No=0;
     int Dist2Yes=0, Dist2No=0;
     int Dist3Yes=0, Dist3No=0;
-
     char cTempVote;
     int TempDistrict;
     bool VotedYes;
-
     ifstream InFile("votes.dat");
 
     while(!InFile.eof()){
         InFile >> TempDistrict >> cTempVote;
-        
-        if(cTempVote == 'Y' || cTempVote=='y')
-            VotedYes=true;
-        else
-            VotedYes=false;
-        
-        switch(TempDistrict){
+        if(cTempVote!='Y' && cTempVote!='N') 
+            break;
+        if(cTempVote == 'Y' || cTempVote=='y'){
+            switch(TempDistrict){
             case 1:
-                if(VotedYes)
-                    Dist1Yes++;
-                else
-                    Dist1No++;
-            break;
+                Dist1Yes++;
+                break;
             case 2:
-                if(VotedYes)
-                    Dist2Yes++;
-                else
-                    Dist2No++;
-            break;
+                Dist2Yes++;
+                break;
             case 3:
-                if(VotedYes)
-                    Dist3Yes++;
-                else
-                    Dist3No++;
-            break;
+                Dist3Yes++;
+                break;
             default:
-                cout << "Error! incorrect district number: " << TempDistrict << endl;
+            }
+        }else{
+            switch(TempDistrict){
+            case 1:
+                Dist1No++;
+                break;
+            case 2:
+                Dist2No++;
+                break;
+            case 3:
+                Dist3No++;
+                break;
+            default:
+            }
         }
     }
 
-    int DisplayOffset = 30;
-    int TotalVotes = Dist1Yes + Dist1No + 
-                     Dist2Yes + Dist2No + 
-                     Dist3Yes + Dist3No;
+    int RightOffset = 30;
+    int TotalVotes = Dist1Yes + Dist1No + Dist2Yes + Dist2No + Dist3Yes + Dist3No;
 
     cout << endl;
-    cout << setw(DisplayOffset) << "[VoterTally from votes.dat]" << endl;
-    cout << endl;
-    cout << setw(DisplayOffset) << "District 1 total votes: " << Dist1Yes + Dist1No << endl;
-    cout << setw(DisplayOffset) << "Voted yes: " << Dist1Yes << endl;
-    cout << setw(DisplayOffset) << "Voted no: " << Dist1No << endl ;
-    cout << endl;
-    cout << setw(DisplayOffset) << "District 2 total votes: " << Dist2Yes + Dist2No << endl;
-    cout << setw(DisplayOffset) << "Voted yes: " << Dist2Yes << endl;
-    cout << setw(DisplayOffset) << "Voted no: " << Dist2No << endl;
-    cout << endl;
-    cout << setw(DisplayOffset) << "District 3 total votes: " << Dist3Yes + Dist3No << endl;
-    cout << setw(DisplayOffset) << "Voted yes: " << Dist3Yes << endl;
-    cout << setw(DisplayOffset) << "Voted no: " << Dist3No << endl;
-    cout << endl;
-    cout << setw(DisplayOffset) << "Grand total votes: " << TotalVotes << endl;
-    cout << endl;
-
+    cout << setw(RightOffset) << "[VoterTally from votes.dat]" << endl << endl;
+    cout << setw(RightOffset) << "District 1 total votes: " << Dist1Yes + Dist1No << endl;
+    cout << setw(RightOffset) << "Voted yes: " << Dist1Yes << endl;
+    cout << setw(RightOffset) << "Voted no: " << Dist1No << endl << endl;
+    cout << setw(RightOffset) << "District 2 total votes: " << Dist2Yes + Dist2No << endl;
+    cout << setw(RightOffset) << "Voted yes: " << Dist2Yes << endl;
+    cout << setw(RightOffset) << "Voted no: " << Dist2No << endl << endl;
+    cout << setw(RightOffset) << "District 3 total votes: " << Dist3Yes + Dist3No << endl;
+    cout << setw(RightOffset) << "Voted yes: " << Dist3Yes << endl;
+    cout << setw(RightOffset) << "Voted no: " << Dist3No << endl << endl;
+    cout << setw(RightOffset) << "Grand total votes: " << TotalVotes << endl << endl;
     InFile.close();
     return 0;
 }
