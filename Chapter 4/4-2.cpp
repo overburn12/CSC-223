@@ -26,7 +26,7 @@ int main(){
 
     if(50.0 <= PurchaseAmount){
         ShippingCost = 0.0;
-        cout << "Congratulations! orders over $50.00 ship for free!" << endl;
+        cout << "Congratulations! orders $50.00 and over ship for free!" << endl;
     }
 
     cout << setprecision(2) << fixed;
