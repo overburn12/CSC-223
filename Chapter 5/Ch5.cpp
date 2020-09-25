@@ -29,7 +29,7 @@ Employee Retail 	Base    Commission
 103 	17067.00 	1018.00 	305.40 
 ***Total Commission for 103:  945.40 
  
-Records:   11 
+Records:  11 
 Total Sales:  202123.00 
 Total Commissions:  2571.80 
  
@@ -57,33 +57,50 @@ int main(){
     int Records = 0, Employee, LastEmployee =-1;
     double Retail, Base, Commission, Sales = 0.0, TotalCommission = 0.0, EmployeeCommission = 0.0;
     bool loopOnceMore = false;
-    cout << "\nEmployee\tRetail\tBase\tCommission" << endl;
+    int tableWidth = 12;
+
+    cout << "\nEmployee";
+    cout << setw(tableWidth) << "Retail";
+    cout << setw(tableWidth) << "Base";
+    cout << setw(tableWidth) << "Commission" << endl;
+    cout << fixed << setprecision(2);
 
     do{
-        InFile >> Employee >> Retail >> Base;
-        if(LastEmployee==-1) 
-            LastEmployee=Employee; //set the first employee
+        if(!loopOnceMore) //dont read from the file if we're already past the end
+            InFile >> Employee >> Retail >> Base;
+
+        if(LastEmployee==-1) //set the first employee
+            LastEmployee=Employee; 
+
         if(LastEmployee!=Employee || loopOnceMore){
             //output the totals for last employee
-            cout << "***Total Commission for " << LastEmployee << ": " << endl << endl;
+            cout << "***Total Commission for " << LastEmployee << ":  " << EmployeeCommission << endl << endl;
             TotalCommission+=EmployeeCommission;
             EmployeeCommission=0.0;
         }
+
         if(loopOnceMore)
-            loopOnceMore=false;
+            //we're on the last loop & didnt read from the file, so dont output the stuff below
+            loopOnceMore=false; //now we can exit the loop
         else{
             Commission = (Base*0.3 <= 100) ? 100.0 : Base*0.3; // or max(100.0, Base*0.3);
-            cout << Employee << "\t" << Retail << "\t" << Base << "\t" << Commission << endl;
-            if(InFile.eof())
+            cout << setw(8) << Employee;
+            cout << setw(tableWidth) << Retail;
+            cout << setw(tableWidth) <<  Base;
+            cout << setw(tableWidth) << Commission << endl;
+            LastEmployee = Employee;
+            Sales+=Retail;
+            EmployeeCommission+=Commission;
+            Records++;
+            if(InFile.eof())//if we're about to exit the loop 
+                //we have to go through once more to output the last employee totals
                 loopOnceMore=true;
         }
     }while(!InFile.eof() || loopOnceMore);
 
-
-
-    cout << "Records: " << Records << endl;
-    cout << "Total Sales: " << Sales << endl;
-    cout << "Total Commissions: " << TotalCommission << endl;
+    cout << "Records:  " << Records << endl;
+    cout << "Total Sales:  " << Sales << endl;
+    cout << "Total Commissions:  " << TotalCommission << endl;
 
     InFile.close();
     return 0;
