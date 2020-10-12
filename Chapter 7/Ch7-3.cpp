@@ -11,46 +11,48 @@ right of the decimal. Use a single method to enter all data.
 
 using namespace std;
 
-double getAvgScore(vector<double>);
-void printScores(vector<double>,int);
-vector<double> loadScores();
-
-int main(){
-    int studentID;
+struct ExamRecords{
     vector<double> scores;
-    cout << fixed << "Enter a student ID: ";
-    cin >> studentID;
-    scores=loadScores();
-    printScores(scores, studentID);
+    int StudentID;
+};
 
-    return 0;
-}
+ExamRecords createRecord(){
+    ExamRecords tmpStudent;
+    double tmpExam;
+    cout << "Enter the students ID: ";
+    cin >> tmpStudent.StudentID;
 
-vector<double> loadScores(){
-    vector<double> scores;
-    double tmp;
     for(int i=1; i<=3; i++){
         cout << "enter score for exam #" << i << ": ";
-        cin >> tmp;
-        scores.push_back(tmp);
+        cin >> tmpExam;
+        tmpStudent.scores.push_back(tmpExam);
     }
-    return scores;
+
+    return tmpStudent;
 }
 
-double getAvgScore(vector<double> scores){
+double getAvgScore(ExamRecords tmpStudent){
     double total=0.0;
 
-    for(auto p: scores)
+    for(auto p: tmpStudent.scores)
         total+=p;
     
-    return total/scores.size();
+    return total/tmpStudent.scores.size();
 }
 
-void printScores(vector<double> scores, int studentID){
-    cout << setprecision(2) << "Printing exam scores for student with ID " << studentID << ":" << endl;
+void printScores(ExamRecords tmpStudent){
+    cout << fixed << setprecision(2) << "Printing exam scores for student with ID " 
+         << tmpStudent.StudentID << ":" << endl;
 
-    for(int i=0; i<scores.size(); i++)
-        cout << "exam #" << i+1 << ": " << scores[i] << endl;
+    for(int i=0; i<tmpStudent.scores.size(); i++)
+        cout << "exam #" << i+1 << ": " << tmpStudent.scores[i] << endl;
 
-    cout << setprecision(0) << "Average score: " << getAvgScore(scores) << endl;
+    cout << setprecision(0) << "Average score: " << getAvgScore(tmpStudent) << endl;
+}
+
+int main(){
+    ExamRecords Student1;
+    Student1=createRecord();
+    printScores(Student1);
+    return 0;
 }
