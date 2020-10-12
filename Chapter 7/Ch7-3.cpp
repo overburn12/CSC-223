@@ -1,0 +1,6 @@
+/*
+Write an application that enables users to enter student ID and three exam scores. 
+Provide a method to compute and return the overall exam average. Provide another 
+method that prints all scores and the average value formatted with no digits to the 
+right of the decimal. Use a single method to enter all data.
+*/
