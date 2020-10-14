@@ -21,9 +21,17 @@ int WordListSize;
 
 void LoadWords(string StrFileName){
     ifstream InFile(StrFileName.c_str());
+    string TempWord;
 
-    for(WordListSize=0; !InFile.eof(); ++WordListSize)
-        InFile >> WordList[WordListSize];
+    for(WordListSize=0; !InFile.eof(); ++WordListSize){
+        TempWord="";
+        InFile >> TempWord;
+
+        if(TempWord.length()!=0)
+            WordList[WordListSize]=TempWord;
+        else
+            --WordListSize;
+    }
 
     InFile.close();
 }
@@ -35,12 +43,12 @@ char lcase(char letter){
 }
 
 void PlayRound(){
-    srand(time(0));
     int CurrentWord = rand() % WordListSize;
 
     string HiddenWord = WordList[CurrentWord];
     int WordLen = HiddenWord.length();
     string VisibleWord (WordLen, '*');
+    string StoredLetters="";
 
     bool FoundTheLetter;
     bool AlreadyGuessed;
@@ -52,14 +60,20 @@ void PlayRound(){
         cin >> TheLetter;
         TheLetter=lcase(TheLetter);
         FoundTheLetter=false;
-        AlreadyGuessed=false;
+        
+        if(VisibleWord.find(TheLetter)!=string::npos){
+            cout << "\t" << TheLetter << " is already in the word" << endl;
+            continue;
+        }
+
+        if(StoredLetters.find(TheLetter)!=string::npos){
+            cout << "\t" << TheLetter << " has already been guessed" << endl;
+            continue;
+        }
+
+        StoredLetters+=TheLetter;
 
         for(int i=0; i<WordLen; i++){
-            if(lcase(VisibleWord[i])==TheLetter){
-                AlreadyGuessed=true;
-                break;
-            }
-
             if(lcase(HiddenWord[i])==TheLetter){
                 VisibleWord[i]=HiddenWord[i];
                 HiddenWord[i]='*';
@@ -67,9 +81,7 @@ void PlayRound(){
             }
         }
 
-        if(AlreadyGuessed){
-            cout << "\t" << TheLetter << " is already in the word" << endl;
-        }else if(!FoundTheLetter){
+        if(!FoundTheLetter){
             Missed++;
             cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
             if(Missed!=1)
@@ -85,7 +97,9 @@ void PlayRound(){
 }
 
 int main(){
+    srand(time(0));
     LoadWords("wordlist.txt");
+    cout << WordListSize << " words loaded" << endl;
     char PlayAgain;
 
     do{
