@@ -10,11 +10,14 @@ Spinosaurus
 Archaeopteryx
 Ichthyosaurus
 Ankylosaurus
-Ekrixinatosaurus
-Zhuchengtyrannus
 Pachycephalosaurus
 Parasaurolophus
 Stegosaurus
 Styracosaurus
 Lambeosaurus
 Xenotarsosaurus
+Coelophysis
+Dilophosaurus
+Sinosauropteryx
+Suchomimus
+Sinocalliopteryx
