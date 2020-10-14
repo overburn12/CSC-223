@@ -1,5 +1,5 @@
 /*
-(Game: hangman) Write a gangman game that randomly generates a word and prompts the user 
+(Game: hangman) Write a hangman game that randomly generates a word and prompts the user 
 to guess one letter at a time, as showm in the sample run. Each letter in the word is 
 displayed as an asterisk. When the user makes a correct guess, the actual letter is then 
 displayed. When the user finishes a word, display the number of misses and ask the user 
@@ -9,36 +9,86 @@ pick a number 1..20 and use this word for the current round.
 */
 
 #include <iostream>
-//#include <iomanip>
+#include <string>
 #include <fstream>
 #include <stdlib.h>
 #include <time.h>
 
 using namespace std;
 
-char WordMap[255][255]={0};
-bool GuessedLetters[26]={false};
-int CurrentWord;
+string WordList[255]={""};
 int WordListSize;
 
-void LoadWords(string strFileName){
-    ifstream inFile(strFileName.c_str());
+void LoadWords(string StrFileName){
+    ifstream InFile(StrFileName.c_str());
 
-    for(WordListSize=0; !inFile.eof(); WordListSize++)
-        inFile.get(WordMap[WordListSize],255);
+    for(WordListSize=0; !InFile.eof(); ++WordListSize)
+        InFile >> WordList[WordListSize];
 
-    inFile.close();
+    InFile.close();
 }
 
-void StartNewWord(){
-    CurrentWord = rand() % WordListSize;
-    
-    for(int i=0; i<26; i++)
-        GuessedLetters[i]=false;
+char lcase(char letter){
+    if('A' <= letter && letter <= 'Z')
+        letter=letter-'A'+'a';
+    return letter;
+}
+
+void PlayRound(){
+    srand(time(0));
+    int CurrentWord = rand() % WordListSize;
+
+    string HiddenWord = WordList[CurrentWord];
+    int WordLen = HiddenWord.length();
+    string VisibleWord (WordLen, '*');
+    bool found;
+    bool already;
+    int Missed=0;
+    char TheLetter;
+
+    do{
+        cout << "(Guess) Enter a letter in word " << VisibleWord << " > ";
+        cin >> TheLetter;
+        TheLetter=lcase(TheLetter);
+        found=false;
+        already=false;
+
+        for(int i=0; i<WordLen; i++){
+            if(lcase(VisibleWord[i])==TheLetter)
+                already=true;
+            if(lcase(HiddenWord[i])==TheLetter){
+                VisibleWord[i]=HiddenWord[i];
+                HiddenWord[i]='*';
+                found=true;
+            }
+        }
+        if(already)
+            cout << "\t" << TheLetter << " is already in the word" << endl;
+        else if(!found){
+            Missed++;
+            cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
+                if(Missed!=1)
+                    cout << "s";
+                cout << endl;
+        }
+    }while(VisibleWord.find('*')!=string::npos);
+
+    cout << "The word is " << VisibleWord << ". you missed " << Missed << " time";
+    if(Missed!=1) 
+        cout << "s";
+    cout << endl;
 }
 
 int main(){
+    LoadWords("wordlist.txt");
+    char PlayAgain;
 
+    do{
+        PlayRound();
+
+        cout << "Do you want to guess another word? Enter y or n > ";
+        cin >> PlayAgain;
+    }while( PlayAgain == 'Y' || PlayAgain == 'y' );
 
     return 0;
 }
