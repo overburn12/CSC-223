@@ -41,8 +41,9 @@ void PlayRound(){
     string HiddenWord = WordList[CurrentWord];
     int WordLen = HiddenWord.length();
     string VisibleWord (WordLen, '*');
-    bool found;
-    bool already;
+
+    bool FoundTheLetter;
+    bool AlreadyGuessed;
     int Missed=0;
     char TheLetter;
 
@@ -50,26 +51,30 @@ void PlayRound(){
         cout << "(Guess) Enter a letter in word " << VisibleWord << " > ";
         cin >> TheLetter;
         TheLetter=lcase(TheLetter);
-        found=false;
-        already=false;
+        FoundTheLetter=false;
+        AlreadyGuessed=false;
 
         for(int i=0; i<WordLen; i++){
-            if(lcase(VisibleWord[i])==TheLetter)
-                already=true;
+            if(lcase(VisibleWord[i])==TheLetter){
+                AlreadyGuessed=true;
+                break;
+            }
+
             if(lcase(HiddenWord[i])==TheLetter){
                 VisibleWord[i]=HiddenWord[i];
                 HiddenWord[i]='*';
-                found=true;
+                FoundTheLetter=true;
             }
         }
-        if(already)
+
+        if(AlreadyGuessed){
             cout << "\t" << TheLetter << " is already in the word" << endl;
-        else if(!found){
+        }else if(!FoundTheLetter){
             Missed++;
             cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
-                if(Missed!=1)
-                    cout << "s";
-                cout << endl;
+            if(Missed!=1)
+                cout << "s";
+            cout << endl;
         }
     }while(VisibleWord.find('*')!=string::npos);
 
@@ -88,7 +93,7 @@ int main(){
 
         cout << "Do you want to guess another word? Enter y or n > ";
         cin >> PlayAgain;
-    }while( PlayAgain == 'Y' || PlayAgain == 'y' );
+    }while(lcase(PlayAgain) == 'y');
 
     return 0;
 }
