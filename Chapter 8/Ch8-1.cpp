@@ -23,18 +23,14 @@ void LoadWords(string StrFileName){
     ifstream InFile (StrFileName.c_str());
     string TempWord;
     WordListSize = 0;
-
     while(!InFile.eof() && WordListSize < 256){
         TempWord = "";
         InFile >> TempWord;
-
         if(TempWord.length() == 0 || TempWord.find('*') != string::npos) 
             continue; //Skip any empty lines at the end of the file, or if the word contains an asterisk
-
         WordList[WordListSize] = TempWord;
         ++WordListSize;
     }
-
     InFile.close();
 }
 
@@ -74,20 +70,15 @@ void PlayRound(){
     int CurrentWord = rand() % WordListSize;
     string HiddenWord = WordList[CurrentWord]; 
     string VisibleWord = MaskTheWord(HiddenWord); 
-
     bool FoundTheLetter;
     int i, Missed = 0;
     char TheLetter;
-
     do{
         cout << "(Guess) Enter a letter in word " << VisibleWord << " > ";
         cin >> TheLetter;
-
         if(TheLetter == '*')
             continue; //to avoid an infinite loop
-
         FoundTheLetter = false;
-
         if(FindAnyCase(VisibleWord, TheLetter) != string::npos){
             cout << "\t" << TheLetter << " is already in the word" << endl;
         }else{
@@ -103,7 +94,6 @@ void PlayRound(){
             }
         }
     }while(VisibleWord.find('*') != string::npos);
-
     cout << "The word is " << VisibleWord << ". you missed " << Missed << " time";
     if(Missed != 1) 
         cout << "s";
@@ -115,13 +105,10 @@ int main(){
     LoadWords("wordlist.txt");
     cout << WordListSize << " words loaded" << endl;
     char PlayAgain;
-
     do{
         PlayRound();
-
         cout << "Do you want to guess another word? Enter y or n > ";
         cin >> PlayAgain;
     }while(PlayAgain == 'Y' || PlayAgain == 'y');
-
     return 0;
 }
