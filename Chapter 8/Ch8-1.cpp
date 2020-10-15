@@ -23,72 +23,89 @@ void LoadWords(string StrFileName){
     ifstream InFile(StrFileName.c_str());
     string TempWord;
 
-    for(WordListSize=0; !InFile.eof(); ++WordListSize){
+    for(WordListSize=0; !InFile.eof() && WordListSize<256;){
         TempWord="";
         InFile >> TempWord;
 
-        if(TempWord.length()!=0)
-            WordList[WordListSize]=TempWord;
-        else
-            --WordListSize;
+        if(TempWord.length()==0 || TempWord.find('*') != string::npos) 
+            continue; //Skip any empty lines at the end of the file, or if the word contains an asterisk
+
+        WordList[WordListSize]=TempWord;
+        ++WordListSize;
     }
 
     InFile.close();
 }
 
-char lcase(char letter){
-    if('A' <= letter && letter <= 'Z')
-        letter=letter-'A'+'a';
-    return letter;
+size_t FindAnyCase(string StrInput, char TheLetter){
+    if(StrInput.find(TheLetter)!=string::npos){
+        return StrInput.find(TheLetter);
+    }else{
+        if('a' <= TheLetter && TheLetter <= 'z') //if were lowercase, convert to upper
+            TheLetter=TheLetter-'a'+'A';
+        else if('A' <= TheLetter && TheLetter <= 'Z') //else if were uppercase, convert to lower
+            TheLetter=TheLetter-'A'+'a';
+        if(StrInput.find(TheLetter)!=string::npos) //is it found now?
+            return StrInput.find(TheLetter);
+    }   
+    return string::npos;
+}
+
+string MaskTheWord(string StrInput){
+    string ret (StrInput.length(), '*');
+    //loop through and check for non-letters in input string
+    for(int i=0; i<StrInput.length(); ++i)
+        if(!('a'<=StrInput[i] && StrInput[i]<='z') && 
+           !('A'<=StrInput[i] && StrInput[i]<='Z') )
+            ret[i]=StrInput[i]; //copy over the char becasue it's not a letter
+    return ret;
 }
 
 void PlayRound(){
+    /*Method: There are 2 strings for the current word. HiddenWord and VisibleWord.
+    VisibleWord is the string printed to the screen, HiddenWord is the unsolved word.
+    HiddenWord starts out as the full word to be guessed, VisibleWord starts out as 
+    all asterisks. As the user enters letters, a loop looks through the HiddenWord
+    and flips any matching letters into the VisibleWord, then replaces the letter
+    in the HiddenWord with an asterisk. Therefore, when the word has been solved
+    the VisibleWord will display the full word, and the HiddenWord will be replaced 
+    with all asterisks.*/
     int CurrentWord = rand() % WordListSize;
 
-    string HiddenWord = WordList[CurrentWord];
-    int WordLen = HiddenWord.length();
-    string VisibleWord (WordLen, '*');
-    string StoredLetters="";
+    string HiddenWord = WordList[CurrentWord]; 
+    string VisibleWord = MaskTheWord(HiddenWord); 
 
     bool FoundTheLetter;
-    bool AlreadyGuessed;
-    int Missed=0;
+    int i, Missed=0;
     char TheLetter;
 
     do{
         cout << "(Guess) Enter a letter in word " << VisibleWord << " > ";
         cin >> TheLetter;
-        TheLetter=lcase(TheLetter);
+
+        if(TheLetter=='*')
+            continue; //to avoid an infinite loop
+
         FoundTheLetter=false;
-        
-        if(VisibleWord.find(TheLetter)!=string::npos){
+
+        if(FindAnyCase(VisibleWord, TheLetter) != string::npos){
             cout << "\t" << TheLetter << " is already in the word" << endl;
-            continue;
-        }
-
-        if(StoredLetters.find(TheLetter)!=string::npos){
-            cout << "\t" << TheLetter << " has already been guessed" << endl;
-            continue;
-        }
-
-        StoredLetters+=TheLetter;
-
-        for(int i=0; i<WordLen; i++){
-            if(lcase(HiddenWord[i])==TheLetter){
+        }else{
+            while(FindAnyCase(HiddenWord, TheLetter) != string::npos){
+                i=FindAnyCase(HiddenWord, TheLetter);
                 VisibleWord[i]=HiddenWord[i];
                 HiddenWord[i]='*';
                 FoundTheLetter=true;
             }
+            if(!FoundTheLetter){
+                Missed++;
+                cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
+                if(Missed!=1)
+                    cout << "s";
+                cout << endl;
+            }
         }
-
-        if(!FoundTheLetter){
-            Missed++;
-            cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
-            if(Missed!=1)
-                cout << "s";
-            cout << endl;
-        }
-    }while(VisibleWord.find('*')!=string::npos);
+    }while(VisibleWord.find('*') != string::npos);
 
     cout << "The word is " << VisibleWord << ". you missed " << Missed << " time";
     if(Missed!=1) 
@@ -107,7 +124,7 @@ int main(){
 
         cout << "Do you want to guess another word? Enter y or n > ";
         cin >> PlayAgain;
-    }while(lcase(PlayAgain) == 'y');
+    }while(PlayAgain == 'Y' || PlayAgain == 'y');
 
     return 0;
 }
