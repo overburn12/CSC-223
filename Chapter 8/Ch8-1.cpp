@@ -16,21 +16,22 @@ pick a number 1..20 and use this word for the current round.
 
 using namespace std;
 
-string WordList[255]={""};
+string WordList[255] = {""};
 int WordListSize;
 
 void LoadWords(string StrFileName){
-    ifstream InFile(StrFileName.c_str());
+    ifstream InFile (StrFileName.c_str());
     string TempWord;
+    WordListSize = 0;
 
-    for(WordListSize=0; !InFile.eof() && WordListSize<256;){
-        TempWord="";
+    while(!InFile.eof() && WordListSize < 256){
+        TempWord = "";
         InFile >> TempWord;
 
-        if(TempWord.length()==0 || TempWord.find('*') != string::npos) 
+        if(TempWord.length() == 0 || TempWord.find('*') != string::npos) 
             continue; //Skip any empty lines at the end of the file, or if the word contains an asterisk
 
-        WordList[WordListSize]=TempWord;
+        WordList[WordListSize] = TempWord;
         ++WordListSize;
     }
 
@@ -38,14 +39,14 @@ void LoadWords(string StrFileName){
 }
 
 size_t FindAnyCase(string StrInput, char TheLetter){
-    if(StrInput.find(TheLetter)!=string::npos){
+    if(StrInput.find(TheLetter) != string::npos){
         return StrInput.find(TheLetter);
     }else{
         if('a' <= TheLetter && TheLetter <= 'z') //if were lowercase, convert to upper
-            TheLetter=TheLetter-'a'+'A';
+            TheLetter = TheLetter - 'a' + 'A';
         else if('A' <= TheLetter && TheLetter <= 'Z') //else if were uppercase, convert to lower
-            TheLetter=TheLetter-'A'+'a';
-        if(StrInput.find(TheLetter)!=string::npos) //is it found now?
+            TheLetter = TheLetter - 'A' + 'a';
+        if(StrInput.find(TheLetter) != string::npos) //is it found now?
             return StrInput.find(TheLetter);
     }   
     return string::npos;
@@ -54,10 +55,10 @@ size_t FindAnyCase(string StrInput, char TheLetter){
 string MaskTheWord(string StrInput){
     string ret (StrInput.length(), '*');
     //loop through and check for non-letters in input string
-    for(int i=0; i<StrInput.length(); ++i)
-        if(!('a'<=StrInput[i] && StrInput[i]<='z') && 
-           !('A'<=StrInput[i] && StrInput[i]<='Z') )
-            ret[i]=StrInput[i]; //copy over the char becasue it's not a letter
+    for(int i = 0; i < StrInput.length(); ++i)
+        if( !('a' <= StrInput[i] && StrInput[i] <= 'z') && 
+            !('A' <= StrInput[i] && StrInput[i] <= 'Z') )
+            ret[i] = StrInput[i]; //copy over the char becasue it's not a letter
     return ret;
 }
 
@@ -71,44 +72,40 @@ void PlayRound(){
     the VisibleWord will display the full word, and the HiddenWord will be replaced 
     with all asterisks.*/
     int CurrentWord = rand() % WordListSize;
-
     string HiddenWord = WordList[CurrentWord]; 
     string VisibleWord = MaskTheWord(HiddenWord); 
 
     bool FoundTheLetter;
-    int i, Missed=0;
+    int i, Missed = 0;
     char TheLetter;
 
     do{
         cout << "(Guess) Enter a letter in word " << VisibleWord << " > ";
         cin >> TheLetter;
 
-        if(TheLetter=='*')
+        if(TheLetter == '*')
             continue; //to avoid an infinite loop
 
-        FoundTheLetter=false;
+        FoundTheLetter = false;
 
         if(FindAnyCase(VisibleWord, TheLetter) != string::npos){
             cout << "\t" << TheLetter << " is already in the word" << endl;
         }else{
             while(FindAnyCase(HiddenWord, TheLetter) != string::npos){
-                i=FindAnyCase(HiddenWord, TheLetter);
-                VisibleWord[i]=HiddenWord[i];
-                HiddenWord[i]='*';
-                FoundTheLetter=true;
+                i = FindAnyCase(HiddenWord, TheLetter);
+                VisibleWord[i] = HiddenWord[i];
+                HiddenWord[i] = '*';
+                FoundTheLetter = true;
             }
             if(!FoundTheLetter){
                 Missed++;
-                cout << "\t" << TheLetter << " is not in the word. You have missed " << Missed << " time";
-                if(Missed!=1)
-                    cout << "s";
-                cout << endl;
+                cout << "\t" << TheLetter << " is not in the word" << endl;
             }
         }
     }while(VisibleWord.find('*') != string::npos);
 
     cout << "The word is " << VisibleWord << ". you missed " << Missed << " time";
-    if(Missed!=1) 
+    if(Missed != 1) 
         cout << "s";
     cout << endl;
 }
