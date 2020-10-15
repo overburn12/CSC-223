@@ -36,7 +36,7 @@ Allosaurus
 Maiasaura
 Zephyrosaurus
 Kentrosaurus
-Tyrannosaurus
+Tyrannosaurus-Rex
 Brachiosaurus
 Utahraptor
 Wannanosaurus
