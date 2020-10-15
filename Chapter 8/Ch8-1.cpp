@@ -23,29 +23,24 @@ void LoadWords(string StrFileName){
     ifstream InFile (StrFileName.c_str());
     string TempWord;
     WordListSize = 0;
-    while(!InFile.eof() && WordListSize < 256){
+    while(!InFile.eof() && WordListSize < 255){
         TempWord = "";
         InFile >> TempWord;
         if(TempWord.length() == 0 || TempWord.find('*') != string::npos) 
             continue; //Skip any empty lines at the end of the file, or if the word contains an asterisk
-        WordList[WordListSize] = TempWord;
-        ++WordListSize;
+        WordList[WordListSize++] = TempWord;
     }
     InFile.close();
 }
 
 size_t FindAnyCase(string StrInput, char TheLetter){
-    if(StrInput.find(TheLetter) != string::npos){
+    if(StrInput.find(TheLetter) != string::npos)
         return StrInput.find(TheLetter);
-    }else{
-        if('a' <= TheLetter && TheLetter <= 'z') //if were lowercase, convert to upper
-            TheLetter = TheLetter - 'a' + 'A';
-        else if('A' <= TheLetter && TheLetter <= 'Z') //else if were uppercase, convert to lower
-            TheLetter = TheLetter - 'A' + 'a';
-        if(StrInput.find(TheLetter) != string::npos) //is it found now?
-            return StrInput.find(TheLetter);
-    }   
-    return string::npos;
+    if('a' <= TheLetter && TheLetter <= 'z') //if were lowercase, convert to upper
+        TheLetter = TheLetter - 'a' + 'A';
+    else if('A' <= TheLetter && TheLetter <= 'Z') //else if were uppercase, convert to lower
+        TheLetter = TheLetter - 'A' + 'a';
+    return StrInput.find(TheLetter);
 }
 
 string MaskTheWord(string StrInput){
@@ -103,7 +98,6 @@ void PlayRound(){
 int main(){
     srand(time(0));
     LoadWords("wordlist.txt");
-    cout << WordListSize << " words loaded" << endl;
     char PlayAgain;
     do{
         PlayRound();
