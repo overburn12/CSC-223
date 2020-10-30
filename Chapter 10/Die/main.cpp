@@ -28,14 +28,13 @@ int main(){
 
     std::cout << "How many times would you like to run the roll test? ";
     std::cin >> roll_test_count;
-    std::cout << std::endl;
 
     for(int x = 0; x < roll_test_count; x++){
         for(int i = 0; i < 6; i++)
             die_roll_count[i] = 0;
         highest_index = 0;
 
-        std::cout << "Roll " << x+1 << ": ";
+        std::cout << "Roll: ";
         for(int i = 0; i < 5; i++){
             test_die.Roll();
             std::cout << test_die.Show();
@@ -51,10 +50,8 @@ int main(){
         std::cout << " Best result: " << words[words_index] << ": " << highest_index + 1 << std::endl;
     }
 
-    std::cout << std::endl;
-
     if(roll_test_count > 20){
-        std::cout << "statistic occurence: \n" << std::fixed << std::setprecision(2);
+        std::cout << "Statistic occurence:\n" << std::fixed << std::setprecision(2);
             for(int i = 0; i < 6; i++){
                 std::cout << words[i] << " happend " << word_index_count[i] << " times, or ";
                 std::cout << ( (double)word_index_count[i] / (double)roll_test_count) * 100.0 <<"%\n";
