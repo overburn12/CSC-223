@@ -30,12 +30,15 @@ int main(){
 
     //if the face value of the die occured x amount of times then its called: two of a kind, 3 of a kind, etc..
     std::string words[5] = {"Single roll", "Two of a kind", "Three of a kind", 
-                           "Four of a kind", "Five of a kind"};
+                           "Four of a kind", "Perfect roll"};
 
     std::cout << "How many times would you like to run the roll test? ";
     std::cin >> roll_test_count;
 
-    for(int x = 0; x < roll_test_count; x++){
+    int x = roll_test_count;
+
+    //while x goes to 0
+    while(x --> 0){
         //reset the counts to zero
         for(int i = 0; i < 6; i++)
             die_roll_count[i] = 0;
@@ -67,8 +70,8 @@ int main(){
         //output the naming of type of occurence for the highest face value combo
         std::cout << " Best result: " << words[words_index] << ": " << highest_index + 1 << std::endl;
 
-        if(words_index==4) std::cout << "!!!!!!!!!!!!!!!!!!!!!! 5 of  a kind !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"; 
-
+        if(words_index == 4) 
+            std::cout << "!!!!!!!!!!!!!!!!!!!!!! 5 of  a kind !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"; 
     }
 
     if(roll_test_count > 20){
