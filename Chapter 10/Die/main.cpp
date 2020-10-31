@@ -74,7 +74,7 @@ int main(){
             std::cout << "!!!!!!!!!!!!!!!!!!!!!! 5 of  a kind !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"; 
     }
 
-    if(roll_test_count > 20){
+    if(99 < roll_test_count){
         std::cout << "Statistic occurence:\n" << std::fixed << std::setprecision(2);
             for(int i = 0; i < 5; i++){
                 std::cout << words[i] << " happend " << word_index_count[i] << " times, or ";
