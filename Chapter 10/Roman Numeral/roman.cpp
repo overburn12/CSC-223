@@ -32,6 +32,10 @@ void romanType::SetValue(std::string strRomanNumeral){
           PreviousNumeral = CurrentNumeral;
       }
     }
+
+    #undef CurrentNumeral
+    #undef FirstNumeral
+    #undef NumeralLength
 }
 
 unsigned int romanType::GetInt(){

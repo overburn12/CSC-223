@@ -1,32 +1,32 @@
 #include <iostream>
 #include <string>
-#include "romanImp.cpp"
+#include "roman.cpp"
 
 int main(){
-    int anum;
-    std::string astring;
+    int romanNumeralNumber;
+    std::string romanNumeralString;
 
-    romanType rn1;
+    romanType romanNumeral1;
 
     std::cout << "Enter a Roman Numeral or a Decimal Number: ";
-    std::cin >> astring;
+    std::cin >> romanNumeralString;
 
-    if('0' <= astring[0] && astring[0] <= '9'){
-        anum = 0;
-        for(int i=0; i<astring.length();  i++){
-            anum *= 10;
-            anum += (astring[i]-'0');
+    if('0' <= romanNumeralString[0] && romanNumeralString[0] <= '9'){
+        romanNumeralNumber = 0;
+        for(int i = 0; i < romanNumeralString.length();  i++){
+            romanNumeralNumber *= 10;
+            romanNumeralNumber += (romanNumeralString[i]-'0');
         }
-        if(anum >= 4000){
-            std::cout << "Too big for conventional Roman Numerals. Keep it under 4000" << std::endl;
+        if(romanNumeralNumber >= 4000){
+            std::cout << "Too big for this Roman Numeral converter. Keep it under 4000" << std::endl;
             return 0;
         }
-        rn1.SetValue(anum);
+        romanNumeral1.SetValue(romanNumeralNumber);
     }else{
-        rn1.SetValue(astring);
+        romanNumeral1.SetValue(romanNumeralString);
     }
     
-    std::cout << rn1.GetInt() << " = " << rn1.GetString() << std::endl;
+    std::cout << romanNumeral1.GetInt() << " = " << romanNumeral1.GetString() << std::endl;
 
     return 0;
 }
