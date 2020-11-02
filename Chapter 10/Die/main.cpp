@@ -23,11 +23,13 @@ int main(){
     int roll_test_count, highest_index, words_index;
     
     //statistic counting, how many times 2 of a kind, 3 of a kind, 4 of a kind etc.. occurs
-    int word_index_count[5] = {0};
+    //words_index_count[OCCURENCE_TYPE][DIE_FACE_VALUE_INDEX]
+    int words_index_count[5][6] = {{0}};
 
     //count for how many times each face value of the die occurs, 0-based index 
     int die_face_count[6] = {0}; 
 
+    //occurence type
     //if the face value of the die occured x amount of times then its called: two of a kind, 3 of a kind, etc..
     std::string words[5] = {"Single roll", "Two of a kind", "Three of a kind", 
                            "Four of a kind", "Perfect roll"};
@@ -37,11 +39,11 @@ int main(){
 
     int x = roll_test_count;
 
-    //while x goes to 0
+    //while x "goes to" 0
     while(x --> 0){
         //reset the counts to zero
         for(int i = 0; i < 6; i++)
-            die_face_count[i] = 0;
+           die_face_count[i] = 0;
         highest_index = 0;
 
         //conduct a single test of 5 rolls
@@ -57,7 +59,7 @@ int main(){
         for(int i = 0; i < 6; i++)
             /*compare the face value of the side multiped by the occurence of the side
              with the current highest combo*/
-            if(die_face_count[highest_index] * (highest_index + 1) <= die_face_count[i] * (i + 1) )
+            if(die_face_count[i] * (i + 1) >= die_face_count[highest_index] * (highest_index + 1))
                 highest_index = i;
 
         //the index for selecting the wording for the type of occurence, the index is zero-based
@@ -65,21 +67,27 @@ int main(){
         words_index = die_face_count[highest_index] - 1;
 
         //statistic counting, how many times did 2 of a kind, 3 of a kind etc occur during all the tests
-        word_index_count[words_index]++;
+        words_index_count[words_index][highest_index]++;
 
-        //output the naming of type of occurence for the highest face value combo
+        //output the naming for the type of occurence of the highest face value combo
         std::cout << " Best result: " << words[words_index] << ": " << highest_index + 1 << std::endl;
-
-        if(words_index == 4) //so a perfect roll sticks out when you run a large number of tests
-            std::cout << "!!!!!!!!!!!!!!!!!!!!!! 5 of  a kind !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"; 
     }
 
     if(25 < roll_test_count){
-        std::cout << "Statistic occurence:\n" << std::fixed << std::setprecision(2);
-            for(int i = 0; i < 5; i++){
-                std::cout << words[i] << " happend " << word_index_count[i] << " times, or ";
-                std::cout << ( (double)word_index_count[i] / (double)roll_test_count) * 100.0 <<"%\n";
-            }
+        #define __SPACING 15
+        #define __TAB_WIDTH 8
+        std::string horizontal_bar (6 * __TAB_WIDTH, '-');
+
+        std::cout << "Occurence counting:\n";
+        std::cout << std::setw(__SPACING) << "Die face value"  << "\t1\t2\t3\t4\t5\t6\n";
+        std::cout << std::setw(__SPACING) << "\t" << horizontal_bar << "\n";
+
+        for(int i = 0; i < 5; i++){ //occurence words loop
+            std::cout << std::setw(__SPACING) <<  words[i];
+            for(int x = 0; x < 6; x++) //die face value loop
+                std::cout << "\t" << words_index_count[i][x];
+            std::cout << "\n";
+        }
     }
     
     return 0;
