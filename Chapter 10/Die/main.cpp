@@ -74,7 +74,7 @@ int main(){
     }
 
     if(25 < roll_test_count){
-        #define __SPACING 15
+        #define __SPACING 20
         #define __TAB_WIDTH 8
         std::string horizontal_bar (6 * __TAB_WIDTH, '-');
 
