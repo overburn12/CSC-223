@@ -18,28 +18,39 @@ are two three's, the two five's make up the better result.)
 #include <iomanip>
 #include "Die.cpp"
 
-int main(){
+int main(int argc, char * argv[]){
     die test_die;
-    int roll_test_count, highest_index, words_index;
+    int roll_test_count = 0, highest_index, words_index;
     
     //statistic counting, how many times 2 of a kind, 3 of a kind, 4 of a kind etc.. occurs
-    //words_index_count[OCCURENCE_TYPE][DIE_FACE_VALUE_INDEX]
+    //words_index_count[ OCCURENCE_TYPE ][ DIE_FACE_VALUE ]
     int words_index_count[5][6] = {{0}};
 
     //count for how many times each face value of the die occurs, 0-based index 
     int die_face_count[6] = {0}; 
 
-    //occurence type
+    //words for occurence type
     //if the face value of the die occured x amount of times then its called: two of a kind, 3 of a kind, etc..
     std::string words[5] = {"Single roll", "Two of a kind", "Three of a kind", 
                            "Four of a kind", "Perfect roll"};
 
-    std::cout << "How many times would you like to run the roll test? ";
-    std::cin >> roll_test_count;
+    if(argc > 1){
+        int y = 0;
+        //load the command line argument into roll_test_count
+        while(argv[1][y] != '\0'){
+            roll_test_count *= 10;
+            roll_test_count += argv[1][y] - '0';
+            y++;
+        }
+    }
+    
+    if(roll_test_count == 0){
+        std::cout << "How many times would you like to run the roll test? ";
+        std::cin >> roll_test_count;
+    }
 
     int x = roll_test_count;
-
-    //while x "goes to" 0
+    
     while(x --> 0){
         //reset the counts to zero
         for(int i = 0; i < 6; i++)
@@ -73,12 +84,12 @@ int main(){
         std::cout << " Best result: " << words[words_index] << ": " << highest_index + 1 << std::endl;
     }
 
-    if(25 < roll_test_count){
+    if(20 <= roll_test_count){
         #define __SPACING 20
         #define __TAB_WIDTH 8
         std::string horizontal_bar (6 * __TAB_WIDTH, '-');
 
-        std::cout << "Occurence counting:\n";
+        std::cout << "Occurence counting for " << roll_test_count << " rolls:\n";
         std::cout << std::setw(__SPACING) << "Die face value"  << "\t1\t2\t3\t4\t5\t6\n";
         std::cout << std::setw(__SPACING) << "\t" << horizontal_bar << "\n";
 
@@ -88,6 +99,8 @@ int main(){
                 std::cout << "\t" << words_index_count[i][x];
             std::cout << "\n";
         }
+        #undef __SPACING
+        #undef __TAB_WIDTH
     }
     
     return 0;
