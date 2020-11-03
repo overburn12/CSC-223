@@ -39,11 +39,10 @@ If the bid is not higher than the current high bid, the function should return f
 The class should have a member function called show(…) that neatly displays all data
     within the object. Label each field appropriately. 
 
-
 Test your program via the following actions: 
 
 A client submits a work to be auctioned. 
-The company assigns the new item the code 1254. The owner id is 5021. //1254, 5021
+The company assigns the new item the code 1254. The owner id is 5021.
 Create an object representing this item. 
 Use the show member function to display the object. 
 
@@ -74,11 +73,12 @@ If the bid is successful, show the updated object reflecting the updated current
 
 int main(){
     AuctionHouse AuctionCompany;
+    
     AuctionCompany.AddWork(1254, 5021);
     AuctionCompany.Show(1254);
 
     AuctionCompany.AddWork(6373, 1001);
-    AuctionCompany.UpdateWork(6373, "Andrea Milna","Spring Day", 75000);
+    AuctionCompany.UpdateWork(6373, "Andrea Milna", "Spring Day", 75000);
     AuctionCompany.Show(6373);
     
     AuctionCompany.UpdateWork(1254, "Carl Patray", "Afternoon Breeze", 35500);

@@ -32,20 +32,23 @@ bool Bid::make_bid(double input_Bid, int input_BidderID){
 }
 
 void Bid::show(){
-    using std::cout;
-    using std::endl;
     #define __SPACING std::setw(20)
-    cout << "--------------------------------------" << endl;
-    cout << __SPACING << "Artwork ID: " << ArtworkID << endl;
-    cout << __SPACING << "Artwork Owner: " << OwnerID << endl;
-    cout << __SPACING << "Artwork Title: " << Title << endl;
-    cout << __SPACING << "Artist: " << Artist << endl;
-    cout << __SPACING << "Minimum Bid: " << MinimumBid << endl;
-    cout << __SPACING << "Current High Bid: " << HighBid << endl;
-    if(HighBid != 0 )
-    cout << __SPACING << "Current Bidder ID: " << HighBidderID << endl;
+    #define __HBAR "--------------------------------------"
+
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << __HBAR << std::endl;
+    std::cout << __SPACING << "Artwork ID: " << ArtworkID << std::endl;
+    std::cout << __SPACING << "Artwork Owner: " << OwnerID << std::endl;
+    std::cout << __SPACING << "Artwork Title: " << Title << std::endl;
+    std::cout << __SPACING << "Artist: " << Artist << std::endl;
+    std::cout << __SPACING << "Minimum Bid: " << "$" << MinimumBid << std::endl;
+    std::cout << __SPACING << "Current High Bid: " << "$" << HighBid << std::endl;
+    if( HighBid != 0 )
+    std::cout << __SPACING << "Current Bidder ID: " << HighBidderID << std::endl;
+    std::cout << __HBAR << std::endl << std::endl;
+
     #undef __SPACING
-    cout << "--------------------------------------" << endl << endl;
+    #undef __HBAR
 }
 
 int Bid::GetArtID(){

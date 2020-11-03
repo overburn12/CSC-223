@@ -14,12 +14,13 @@ void AuctionHouse::AddWork(int ArtworkID, int OwnerID, std::string Artist, std::
     ArtworkVector.push_back(Temp1);
 }
 
-void AuctionHouse::UpdateWork(int ArtworkID, std::string Artist, std::string Title, double MinimumBid){
+bool AuctionHouse::UpdateWork(int ArtworkID, std::string Artist, std::string Title, double MinimumBid){
     for(auto& i: ArtworkVector)
         if(i.GetArtID() == ArtworkID){
             i.update_data(Artist, Title, MinimumBid);
-            break;
+            return true;
         }
+    return false;
 }
 
 bool AuctionHouse::MakeBid(int ArtworkID, double BidAmount, int BidderID){
@@ -39,17 +40,17 @@ bool AuctionHouse::Show(int ArtworkID){
 }
 
 void AuctionHouse::ShowAll(){
+    std::cout << "\nShowing all Artwork in inventory:" << std::endl;
     for(auto& i: ArtworkVector)
         i.show();
 }
 
 bool AuctionHouse::RemoveWork(int ArtworkID){
     std::vector<Bid>::iterator it;
-    for(it = ArtworkVector.begin(); it != ArtworkVector.end(); ++it){
+    for(it = ArtworkVector.begin(); it != ArtworkVector.end(); it++)
         if(it->GetArtID() == ArtworkID){
             it = ArtworkVector.erase(it);
             return true;
         }
-    }
     return false;
 }
