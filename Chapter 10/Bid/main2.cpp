@@ -67,35 +67,38 @@ If the bid is successful, show the updated object reflecting the updated current
 
 */
 
-#include "Bid.cpp"
+#include "AuctionHouse.cpp"
 
 int main(){
-    Bid Art1 (1254, 5021);
-    Art1.show();
+    AuctionHouse AuctionCompany;
 
-    Bid Art2 (6373, 1001);
-    Art2.update_data("Andrea Milna", "Spring Day", 75000);
-    Art2.show();
+    AuctionCompany.AddWork(1254, 5021);
+    AuctionCompany.Show(1254);
+
+    AuctionCompany.AddWork(6373, 1001);
+    AuctionCompany.UpdateWork(6373, "Andrea Milna", "Spring Day", 75000);
+    AuctionCompany.Show(6373);
     
-    Art1.update_data("Carl Patray", "Afternoon Breeze", 35500);
-    Art1.show();
+    AuctionCompany.UpdateWork(1254, "Carl Patray", "Afternoon Breeze", 35500);
+    AuctionCompany.Show(1254);
 
     /*---------------------------------------------------------------------------*/
     #define MakeBidAndShow(x,y,z) \
-    if(x.make_bid(y, z)){ \
-        std::cout << "Succesful Bid of " << y << " on Item " << x.GetArtID() << "! Showing Below:" << std::endl; \
-       x.show(); \
+    if(AuctionCompany.MakeBid(x, y, z)){ \
+        std::cout << "Succesful Bid of " << y << " on Item " << x << "! Showing Below:" << std::endl; \
+        AuctionCompany.Show(x); \
     }else{ \
-        std::cout << "Bid of " << y << " has not met the minimum bid for Item " << x.GetArtID() << std::endl; \
+        std::cout << "Bid of " << y << " has not met the minimum bid for Item " << x << std::endl; \
     } 
     /*---------------------------------------------------------------------------*/
 
-    MakeBidAndShow(Art1, 50000, 1111)
-    MakeBidAndShow(Art2, 41250, 2222)
+    MakeBidAndShow(1254, 50000, 1111)
+    MakeBidAndShow(6373, 41250, 2222)
 
     #undef MakeBidAndShow
 
-    std::cout << std::endl;
+    AuctionCompany.RemoveWork(1254);
+    AuctionCompany.ShowAll();
 
     return 0;
 }
