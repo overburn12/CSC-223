@@ -3,9 +3,9 @@ Elf::Elf() : Creature(10, 10) {}
 
 Elf::Elf(int newStrength, int newHit) : Creature(newStrength, newHit) {}
 
-std::string Elf::getSpecies() const{ return("Elf"); }
+std::string Elf::getSpecies() const { return("Elf"); }
 
-int Elf::getDamage() const{
+int Elf::getDamage() const {
     int damage = Creature::getDamage();
     std::cout << getSpecies() << " attacks for " << damage << " points!" << std::endl;
 

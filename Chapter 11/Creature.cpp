@@ -10,7 +10,7 @@ int Creature::getHitpoints() const { return hitpoints; }
 
 bool Creature::isAlive() { return (hitpoints != 0); }
 
-void Creature::setStrength(int newStrength) { 
+void Creature::setStrength(int newStrength){ 
     if(newStrength < 0){
         strength = 0;
     }else{    
@@ -18,7 +18,7 @@ void Creature::setStrength(int newStrength) {
     }
 }
 
-void Creature::setHitpoints(int newHit) {
+void Creature::setHitpoints(int newHit){
     if(newHit < 0){
         hitpoints = 0;
     }else{

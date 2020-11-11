@@ -4,9 +4,9 @@ Balrog::Balrog() : Demon(10, 10) {}
 
 Balrog::Balrog(int newStrength, int newHit) : Demon(newStrength, newHit) {}
 
-std::string Balrog::getSpecies() const{ return ("Balrog"); }
+std::string Balrog::getSpecies() const { return ("Balrog"); }
 
-int Balrog::getDamage() const{
+int Balrog::getDamage() const {
     int damage1 = Demon::getDamage();
     std::cout << getSpecies() << " attacks for " << damage1 << " points!" << std::endl;
 
