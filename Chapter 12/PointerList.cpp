@@ -1,3 +1,4 @@
+#include <stdexcept>
 
 template <class T>
 class PointerList{
@@ -51,6 +52,19 @@ public:
     }
 
     T& operator[](const int index){
+        if( 0 > index || list_size <= index)
+        {
+            /*
+            //wrap-around indexing
+            int new_index = index % list_size;
+            if (0 > new_index)
+            {
+                new_index += list_size;
+            }
+            return the_list[new_index];
+            */
+            throw std::out_of_range("Index out of bounds");;
+        }
         return the_list[index];
     }
 };
