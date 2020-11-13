@@ -22,6 +22,7 @@ public:
     Course() : courseID(""), courseTitle(""), roomNumber(""), contactHours("") {}
 
     virtual void show() = 0 ;
+    virtual ~Course() {}
 };
 
 class CirriculumClass : public Course
@@ -40,6 +41,7 @@ public:
               tuitionRate( new_tuitionRate ) {}
 
     CirriculumClass() : Course(), creditHours(0), tuitionRate(0) {}
+    ~CirriculumClass() {}
 
     void show(){
         int sp = 30;
@@ -68,6 +70,7 @@ public:
               fee( new_fee ) {}
 
     ContinuingEducation() : Course(), fee(0) {}
+    ~ContinuingEducation() {}
 
     void show()
     {
