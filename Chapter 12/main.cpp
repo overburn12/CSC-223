@@ -35,14 +35,37 @@ Implement each menu option
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <limits>
 #include "Courses.cpp"
 
 void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_class);
+/*Precondition: classes exists
+ Postcondition: creates either a CirriculumClass or ContinuingEducation with user entered data.
+                increase class_list_size by 1.
+                add the derived class to the end of classes. 
+*/
+
 void do_menu(int selection, Course** &classes, int &class_list_size);
+/*Precondition: The menu has been printed to the screen, 
+                user entered a number (selection) corresponding to the menu number
+  Postcondtion: The menu selection is executed by calling the appropriate functions
+*/
+
 void load_default_list(Course** &classes, int &class_list_size);
+/*Precondtion:  classes exists
+ Postcondtion:  classes contains 5-6 derieved classes of Course, each filled with seemingly real data.
+                class_list_size corresponds to the size of the classes array
+*/
+
 double get_double();
+/*Precondition: A message has been printed to the screen, prompting the user to enter a number
+  Postcondtion: A number is taken from the input stream and returned as a double.
+*/
+
 int get_menu();
+/*Precondtion: none
+ Postcondtion: The menu is printed to the screen.
+                returns a number corresponding to the menu selection.
+*/
 
 int main()
 {
@@ -76,23 +99,9 @@ void load_default_list(Course** &classes, int &class_list_size)
 }
 
 double get_double()
-{   /*
-        This function gets a string from std::cin
-        it then looks through and builds a decimal number
-        while skiping over any non-number charecters
-        and returns the number as a double.
-        If there is a '-' before any numbers have been computed
-        then the number returned will be negative.
-        this is to prevent the program from getting suck in an infinite loop
+{   /*  basically, this is to prevent the program from getting suck in an infinite loop
         when someone enters a string for and expression like
         'std::cin >> (double or int);'
-
-        Precondition: (user enters) getwwh-sfh23gds-dfntrw3.r34rfg5
-        Postcondition: -233.345
-        Precondition: (user enters) vewr8nv we3dfg45svf. fdh234ggs
-        Postcondition: 8345.234
-        Precondition: (user enters) efnaler jfsnldjrg  nslkjngd sljnfsdlewnfsj
-        Postcondition: 0
     */
     std::string input_line;
     double the_int = 0, the_decimal = 0, the_decimal_position = 1;
