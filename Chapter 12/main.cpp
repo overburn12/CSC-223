@@ -87,9 +87,7 @@ void load_default_list(Course** &classes, int &class_list_size)
 {
     class_list_size = 6;
     std::string default_contact = "M-F 10AM to 12PM";
-    delete []  *classes;
-    class_list_size ++;
-    class_list_size --;
+    delete []  classes;
     classes = new Course*[class_list_size];
     //classes[] = new CirriculumClass( courseID, courseTitle, roomNumber, contactHours, creditHours, tuitionRate );
     classes[0] = new CirriculumClass( "CSC-223", "Computer Programming C++", "11-306", default_contact, 4, 325.00 );
@@ -102,7 +100,8 @@ void load_default_list(Course** &classes, int &class_list_size)
 }
 
 double get_double()
-{   /*  basically, this is to prevent the program from getting suck in an infinite loop
+{   /*  Build a double from a string, while skipping over non-number characters.
+        basically, this is to prevent the program from getting suck in an infinite loop
         when someone enters a string for and expression like
         'std::cin >> (double or int);'
     */
