@@ -234,7 +234,7 @@ void do_menu(int selection, Course** &classes, int &class_list_size)
             std::cout << "Clearing the list of saved classes" << std::endl;
             delete [] classes;
             class_list_size = 0;
-            classes = new Course*[class_list_size];
+            classes = nullptr;
         }
         break;
         case 9:
