@@ -35,7 +35,6 @@ Implement each menu option
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <malloc.h>
 #include "Courses.cpp"
 
 void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_class);
@@ -71,7 +70,7 @@ int get_menu();
 int main()
 {
     int selection, class_list_size = 0;
-    Course** courses = new Course*[class_list_size];
+    Course** courses = nullptr;
     std::cout << std::endl;
     do
     {
