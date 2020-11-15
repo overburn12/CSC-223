@@ -39,7 +39,7 @@ Implement each menu option
 
 void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_class);
 /*Precondition: classes exists
- Postcondition: creates either a CirriculumClass or ContinuingEducation with user entered data.
+ Postcondition: creates either a CirriculumClass or ContinuingEducation with user-entered data.
                 increase class_list_size by 1.
                 add the derived class to the end of classes. 
 */
@@ -99,11 +99,10 @@ void load_default_list(Course** &classes, int &class_list_size)
 }
 
 double get_double()
-{   /*  Build a double from a string, while skipping over non-number characters.
-        basically, this is to prevent the program from getting suck in an infinite loop
-        when someone enters a string for and expression like
-        'std::cin >> (double or int);'
-    */
+/*  gets a string from input stream. 
+    builds and returns a double from that string, 
+    while skipping over and ignoring non-number characters.  */
+{   
     std::string input_line;
     double the_int = 0, the_decimal = 0, the_decimal_position = 1;
     bool before_decimal_point = true;
@@ -147,7 +146,7 @@ void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_clas
 {
     std::string courseTitle, courseID, roomNumber, contactHours;
     double creditHours, tuitionRate, fee;
-    Course* new_class;
+    Course* new_class = nullptr;
 
     std::cout << "Enter course Title: "; std::getline(std::cin, courseTitle);
     std::cout << "Enter course ID: "; std::getline(std::cin, courseID);
@@ -237,7 +236,7 @@ void do_menu(int selection, Course** &classes, int &class_list_size)
             classes = nullptr;
         }
         break;
-        case 9:
+        case 9: //Exit the program
         {
             std::cout << "Exiting the program" << std::endl;
         }

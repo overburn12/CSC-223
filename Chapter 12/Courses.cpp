@@ -5,30 +5,25 @@
 class Course
 {
 protected:
-    std::string courseID;
-    std::string courseTitle;
-    std::string roomNumber;
-    std::string contactHours;
+    std::string courseID, courseTitle, roomNumber, contactHours;
 public:
-    Course( std::string new_courseID, 
-            std::string new_courseTitle, 
-            std::string new_roomNumber, 
-            std::string new_contactHours ) 
+    Course    ( std::string new_courseID, 
+                std::string new_courseTitle, 
+                std::string new_roomNumber, 
+                std::string new_contactHours ) 
         : courseID( new_courseID ), 
           courseTitle( new_courseTitle ), 
           roomNumber( new_roomNumber ), 
           contactHours( new_contactHours ) {}
-
-    Course() : courseID(""), courseTitle(""), roomNumber(""), contactHours("") {}
+    
+    virtual ~Course() {};
 
     virtual void show() = 0 ;
-    virtual ~Course() {}
 };
 
 class CirriculumClass : public Course
 {
-    double creditHours;
-    double tuitionRate;
+    double creditHours, tuitionRate;
 public:
     CirriculumClass( std::string new_courseID, 
                      std::string new_courseTitle, 
@@ -39,8 +34,7 @@ public:
             : Course( new_courseID, new_courseTitle, new_roomNumber, new_contactHours ), 
               creditHours( new_creditHours ), 
               tuitionRate( new_tuitionRate ) {}
-
-    CirriculumClass() : Course(), creditHours(0), tuitionRate(0) {}
+    
     ~CirriculumClass() {}
 
     void show(){
@@ -69,7 +63,6 @@ public:
             : Course( new_courseID, new_courseTitle, new_roomNumber, new_contactHours ), 
               fee( new_fee ) {}
 
-    ContinuingEducation() : Course(), fee(0) {}
     ~ContinuingEducation() {}
 
     void show()
