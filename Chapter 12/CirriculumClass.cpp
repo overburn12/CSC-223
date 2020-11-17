@@ -10,8 +10,8 @@ CirriculumClass::CirriculumClass( std::string new_courseID,
                                   double new_creditHours, 
                                   double new_tuitionRate ) 
                 : Course( new_courseID, new_courseTitle, new_roomNumber, new_contactHours ), 
-                creditHours( new_creditHours ), 
-                tuitionRate( new_tuitionRate ) {}
+                  creditHours( new_creditHours ), 
+                  tuitionRate( new_tuitionRate ) {}
 
 CirriculumClass::~CirriculumClass() {}
 

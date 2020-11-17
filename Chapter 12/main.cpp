@@ -74,22 +74,25 @@ int main()
 {
     int selection, class_list_size = 0;
     Course** courses = nullptr;
+    
     std::cout << std::endl;
+
     do
     {
         selection = get_menu();
         do_menu(selection, courses, class_list_size);
     }
     while(selection != 9);
+
     delete [] courses;
     return 0;
 }
 
 void load_default_list(Course** &classes, int &class_list_size)
 {
-    class_list_size = 6;
     std::string default_contact = "M-F 10AM to 12PM";
     delete []  classes;
+    class_list_size = 6;
     classes = new Course*[class_list_size];
     //classes[] = new CirriculumClass( courseID, courseTitle, roomNumber, contactHours, creditHours, tuitionRate );
     classes[0] = new CirriculumClass( "CSC-223", "Computer Programming C++", "11-306", default_contact, 4, 325.00 );
@@ -108,8 +111,7 @@ double get_double()
 {   
     std::string input_line;
     double the_int = 0, the_decimal = 0, the_decimal_position = 1;
-    bool before_decimal_point = true;
-    bool is_negative = false;
+    bool before_decimal_point = true, is_negative = false;
 
     std::getline(std::cin, input_line);
 
@@ -138,10 +140,12 @@ double get_double()
             }
         }
     }
+
     if(is_negative)
     {
         return -1 * (the_int + the_decimal);
     }
+
     return (the_int + the_decimal);  
 }
 
@@ -186,7 +190,6 @@ void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_clas
 
 int get_menu()
 {
-    int selection;
     std::cout << "   [Class Program Main Menu]" << std::endl
               << "1. Load a default pre-programmed array of courses" << std::endl
               << "2. Add a curriculum class to schedule" << std::endl
@@ -195,8 +198,7 @@ int get_menu()
               << "5. Clear the list of classes" << std::endl
               << "9. Exit" << std::endl
               << " > ";
-    selection = (int)get_double();
-    return selection;
+    return (int)get_double();
 }
 
 void do_menu(int selection, Course** &classes, int &class_list_size)

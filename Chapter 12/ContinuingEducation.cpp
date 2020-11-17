@@ -4,12 +4,12 @@
 #include "ContinuingEducation.hpp"
 
 ContinuingEducation::ContinuingEducation( std::string new_courseID, 
-                        std::string new_courseTitle, 
-                        std::string new_roomNumber, 
-                        std::string new_contactHours, 
-                        double new_fee )
-        : Course( new_courseID, new_courseTitle, new_roomNumber, new_contactHours ), 
-            fee( new_fee ) {}
+                                          std::string new_courseTitle, 
+                                          std::string new_roomNumber, 
+                                          std::string new_contactHours, 
+                                          double new_fee )
+                    : Course( new_courseID, new_courseTitle, new_roomNumber, new_contactHours ), 
+                      fee( new_fee ) {}
 
 ContinuingEducation::~ContinuingEducation() {}
 
