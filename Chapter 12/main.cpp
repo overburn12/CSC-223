@@ -77,6 +77,7 @@ int main()
     
     std::cout << std::endl;
 
+    //The main loop for repeating the menu selection screen
     do
     {
         selection = get_menu();
@@ -84,6 +85,7 @@ int main()
     }
     while(selection != 9);
 
+    //delete all the courses we created on the heap
     delete [] courses;
     return 0;
 }
@@ -92,16 +94,17 @@ void load_default_list(Course** &classes, int &class_list_size)
 {
     std::string default_contact = "M-F 10AM to 12PM";
     delete []  classes;
-    class_list_size = 6;
+    class_list_size = 5;
+    //create a new dynamic array for the classes
     classes = new Course*[class_list_size];
+
     //classes[] = new CirriculumClass( courseID, courseTitle, roomNumber, contactHours, creditHours, tuitionRate );
     classes[0] = new CirriculumClass( "CSC-223", "Computer Programming C++", "11-306", default_contact, 4, 325.00 );
     classes[1] = new CirriculumClass( "PHL-103", "Introduction to Ethics",  "6-422", default_contact, 3, 325.00 );
     classes[2] = new CirriculumClass( "ENG-251", "Technical Writing", "12-105", default_contact, 3, 240.00 );
-    classes[3] = new CirriculumClass( "MTH-160", "Statistics I", "12-210", default_contact, 3, 240.00 );
     //classes[] = new ContinuingEducation( courseID, courseTitle, roomNumber, contactHours, fee );
-    classes[4] = new ContinuingEducation( "PEC-250", "Fitness and Wellness", "5-105", default_contact, 500.00 );
-    classes[5] = new ContinuingEducation( "HED-209", "Drugs and Behavior", "5-203", default_contact, 500.00 );
+    classes[3] = new ContinuingEducation( "PEC-250", "Fitness and Wellness", "5-105", default_contact, 500.00 );
+    classes[4] = new ContinuingEducation( "HED-209", "Drugs and Behavior", "5-203", default_contact, 500.00 );
 }
 
 double get_double()
@@ -110,32 +113,48 @@ double get_double()
     while skipping over and ignoring non-number characters.  */
 {   
     std::string input_line;
-    double the_int = 0, the_decimal = 0, the_decimal_position = 1;
+    double the_integer_part = 0, the_decimal_part = 0, decimal_position = 1;
     bool before_decimal_point = true, is_negative = false;
 
     std::getline(std::cin, input_line);
 
     for(int i = 0; i < input_line.size(); i++)
     {
+        //if the current letter is a number, within the range of 0 to 9
         if('0' <= input_line[i] && input_line[i] <= '9')
         {
+            //the single-digit number value we are dealing with
+            double this_single_digit = (double)(input_line[i] - '0');
+
             if(before_decimal_point)
             {
-                the_int = (the_int * 10) + (input_line[i] - '0');
+                //We are adding the LSB, so multiply by 10 and make room to add the LSB
+                the_integer_part *= 10;
+
+                //add the single digit value we are at
+                the_integer_part += this_single_digit;
             }
             else
             {
-                the_decimal += ((double)(input_line[i] - '0') / std::pow(10.0, the_decimal_position++));
+                //The current decimal power factor, tenths, hundreths, thousandths, etc...
+                double this_decimal_power = std::pow(10.0, decimal_position);
+
+                //add the digit value devided by the power factor
+                the_decimal_part += (this_single_digit / this_decimal_power);
+
+                //increase the decimal power to the next factor
+                decimal_position++;
             }
         }
         else
         {
-            if(input_line[i] == '-' && the_int == 0)
-            {
+            if(input_line[i] == '-' && the_integer_part == 0)
+            {   //if we come across a - sign and we have not hit a number yet
+                //then the number will be returned as negative
                 is_negative = true;
             }
             if(input_line[i] == '.')
-            {
+            {   //if we hit a decimal point then switch to adding the decimal portion
                 before_decimal_point = false;
             }
         }
@@ -143,10 +162,10 @@ double get_double()
 
     if(is_negative)
     {
-        return -1 * (the_int + the_decimal);
+        return -1 * (the_integer_part + the_decimal_part);
     }
 
-    return (the_int + the_decimal);  
+    return (the_integer_part + the_decimal_part);  
 }
 
 void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_class)
@@ -155,34 +174,46 @@ void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_clas
     double creditHours, tuitionRate, fee;
     Course* new_class = nullptr;
 
-    std::cout << "Enter course Title: "; std::getline(std::cin, courseTitle);
-    std::cout << "Enter course ID: "; std::getline(std::cin, courseID);
-    std::cout << "Enter the room number: "; std::getline(std::cin, roomNumber);
-    std::cout << "Enter the # of contact hours: "; std::getline(std::cin, contactHours);
+    std::cout << "Enter course Title: "; 
+    std::getline(std::cin, courseTitle);
 
-    if(is_cirriculum_class)
+    std::cout << "Enter course ID: "; 
+    std::getline(std::cin, courseID);
+
+    std::cout << "Enter the room number: "; 
+    std::getline(std::cin, roomNumber);
+
+    std::cout << "Enter the # of contact hours: "; 
+    std::getline(std::cin, contactHours);
+
+    //Decide which type of class to make
+    if(is_cirriculum_class) 
     {
-        std::cout << "Enter the credit hours: "; creditHours = get_double();
-        std::cout << "Enter the tuition rate: "; tuitionRate = get_double();
+        std::cout << "Enter the credit hours: "; 
+        creditHours = get_double();
+
+        std::cout << "Enter the tuition rate: "; 
+        tuitionRate = get_double();
+
         new_class = new CirriculumClass( courseID, courseTitle, roomNumber, contactHours, creditHours, tuitionRate );
     }
     else
     {
-        std::cout << "Enter the course fee: "; fee = get_double();
+        std::cout << "Enter the course fee: "; 
+        fee = get_double();
+
         new_class = new ContinuingEducation( courseID, courseTitle, roomNumber, contactHours, fee );
     }
 
     //--------------expand the course pointer array 1 more------------------------
+    Course** temp = new Course*[class_list_size+1];
+    for(int i = 0; i < class_list_size; i++)
     {
-        Course** temp = new Course*[class_list_size+1];
-        for(int i = 0; i < class_list_size; i++)
-        {
-            temp[i] = classes[i];
-        }
-        class_list_size += 1;
-        delete [] classes;
-        classes = temp;
+        temp[i] = classes[i];
     }
+    class_list_size += 1;
+    delete [] classes;
+    classes = temp;
     //--------------------------------------------------------------------------
     
     classes[class_list_size - 1] = new_class;
