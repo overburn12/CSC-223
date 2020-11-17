@@ -35,7 +35,10 @@ Implement each menu option
 #include <iostream>
 #include <string>
 #include <cmath>
-#include "Courses.cpp"
+#include "Course.hpp"
+#include "CirriculumClass.hpp"
+#include "ContinuingEducation.hpp"
+
 
 void add_course(Course** &classes, int &class_list_size, bool is_cirriculum_class);
 /*Precondition: classes exists
