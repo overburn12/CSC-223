@@ -13,7 +13,11 @@ std::string TF(bool condition){
 int main()
 {
 
-   ClockType alarm_clock(13,0,0), time_clock(12,0,0);
+    ClockType alarm_clock, time_clock;
+    char select_AM_PM;
+    bool fast_mode = false, wrap_the_clock = false;
+
+    std::cout << "Enter the following times using the format 00:00:00" << std::endl;
 
     std::cout << "Enter the current time: ";
     std::cin >> time_clock;
@@ -21,23 +25,50 @@ int main()
     std::cout << "Enter an alarm time: ";
     std::cin >> alarm_clock;
 
+    std::cout << "Display AM/PM? Y / N > ";
+    std::cin >> select_AM_PM;
+
+    if(select_AM_PM == 'y' || select_AM_PM == 'Y')
+    {
+        time_clock.set_AM_PM_mode(true);
+        alarm_clock.set_AM_PM_mode(true);
+    }
+
+    if( alarm_clock.get_total_seconds() - time_clock.get_total_seconds() > (45 * 60) )
+    {
+        fast_mode = true;
+    }
+
     if(time_clock > alarm_clock)
     {
-        std::cout << "Current time is greater than alarm clock time";
-        return 0;
+        fast_mode = true;
+        wrap_the_clock = true;
     }
 
-    while( time_clock < alarm_clock )
+    do
     {
-        //std::system("cls");
-        std::cout << "---------------------------\n";
+        if(fast_mode)
+        {
+            time_clock.increase_minutes(1);
+
+            if(time_clock.get_total_seconds() < 60)
+            {
+                wrap_the_clock = false;
+            }
+        }
+        else
+        {
+            time_clock++;
+        }
+
+        std::system("cls");
         std::cout << "Current time: " << time_clock << std::endl;
         std::cout << "Alarm clock:  " << alarm_clock << std::endl;
-        time_clock++;
     }
+    while( time_clock < alarm_clock || wrap_the_clock );
 
+    std::cout << "----------------------\n";
     std::cout << "The alarm has gone off!";
-
 
     return 0;
 }

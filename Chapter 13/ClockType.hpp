@@ -6,18 +6,23 @@
 
 class ClockType{
     int hours, minutes, seconds;
+    bool show_AM_PM;
 public:
-    ClockType(): hours(0), minutes(0), seconds(0) {}
+    ClockType(): hours(0), minutes(0), seconds(0), show_AM_PM(false) {}
     ClockType(int hr, int min, int sec);
     ClockType(ClockType& copy_clock) { copy(copy_clock); }
 
     int get_hours() const { return hours; }
     int get_minutes() const { return minutes; }
     int get_seconds() const { return seconds; }
+    int get_total_seconds() const;
+
+    bool get_AM_PM_mode() const { return show_AM_PM; }
+    void set_AM_PM_mode( bool AM_PM ) { show_AM_PM = AM_PM; }
 
     std::string get_string() const;
 
-    void set_hours( int hr ) { hours = hr; }
+    void set_hours( int hr );
     void set_minutes( int min );
     void set_seconds( int sec );
 

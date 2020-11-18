@@ -7,11 +7,23 @@ ClockType::ClockType(int hr, int min = 0 , int sec = 0)
     set_hours(hr);
 }
 
+int ClockType::get_total_seconds() const
+{
+    return ((( get_hours() * 60 ) + get_minutes()) * 60 ) + get_seconds();
+}
+
+
 std::string ClockType::get_string() const 
 {
-    std::string return_string = std::to_string( get_hours() );
-    return_string.reserve( return_string.size() + 6 );
+    std::string return_string;
+    return_string.reserve( 8 );
+    
+    if(get_hours() < 10)
+    {
+        return_string.append("0");
+    }
 
+    return_string.append( std::to_string(get_hours()) );
     return_string.append(":");
 
     if(get_minutes() < 10)
@@ -32,22 +44,55 @@ std::string ClockType::get_string() const
     return return_string;
 }
 
+void ClockType::set_hours( int hr )
+{
+    if( hr < 0 )
+    {
+        hours = 0;
+    }
+    else
+    {
+        if( hr > 23 )
+        {
+            hours = hr % 24;
+        }
+        else
+        {
+            hours = hr;    
+        }
+    }
+}
+
 void ClockType::set_minutes( int min )
 {
-    if( 60 <= min )
+    if( min < 0 )
     {
-        increase_hours( min / 60 );
+        minutes = 0;
     }
-    minutes = min % 60;
+    else
+    {
+        if( 60 <= min )
+        {
+            increase_hours( min / 60 );
+        }
+        minutes = min % 60;
+    }
 }
 
 void ClockType::set_seconds( int sec ) 
 {
-    if( 60 <= sec )
+    if( sec < 0 )
     {
-        increase_minutes( sec / 60 );
+        seconds = 0;
     }
-    seconds = sec % 60;
+    else
+    {
+        if( 60 <= sec )
+        {
+            increase_minutes( sec / 60 );
+        }
+        seconds = sec % 60;
+    }
 }
 
 void ClockType::reset()
@@ -62,21 +107,39 @@ void ClockType::copy(ClockType& copy_clock)
     set_hours(copy_clock.get_hours());
     set_minutes(copy_clock.get_minutes());
     set_seconds(copy_clock.get_seconds());
+    set_AM_PM_mode(copy_clock.get_AM_PM_mode());
 }
 
 std::ostream& operator << (std::ostream &out, const ClockType &clock1)
 {
-    out << clock1.get_hours();
-    out << ":";
+    int temp_hours = clock1.get_hours();
+
+    if (clock1.get_AM_PM_mode())
+    {
+        if(clock1.get_hours() > 12 )
+        {
+            temp_hours -= 12;
+        }
+        
+        if(clock1.get_hours() == 0)
+        {
+            temp_hours = 12;
+        }
+    }
+
+    if(temp_hours < 10)
+    {
+        out << "0";
+    }
+
+    out << temp_hours << ":";
 
     if(clock1.get_minutes() < 10)
     {
         out << "0";
     }
 
-    out << clock1.get_minutes();
-
-    out << ":";
+    out << clock1.get_minutes() << ":";
     
     if( clock1.get_seconds() < 10)
     {
@@ -84,6 +147,19 @@ std::ostream& operator << (std::ostream &out, const ClockType &clock1)
     }
 
     out << clock1.get_seconds();
+
+    if(clock1.get_AM_PM_mode())
+    {
+        out << " ";
+        if(clock1.get_hours() >= 12)
+        {
+            out << "PM";
+        }
+        else
+        {
+            out << "AM";
+        }
+    }
 
     return out;
 }
