@@ -15,7 +15,7 @@ public:
     int get_hours() const { return hours; }
     int get_minutes() const { return minutes; }
     int get_seconds() const { return seconds; }
-    int get_total_seconds() const;
+    int get_total_seconds() const ;
 
     bool get_AM_PM_mode() const { return show_AM_PM; }
     void set_AM_PM_mode( bool AM_PM ) { show_AM_PM = AM_PM; }

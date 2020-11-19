@@ -2,17 +2,8 @@
 #include <stdlib.h>
 #include "ClockType.hpp"
 
-std::string TF(bool condition){
-    if(condition)
-        return "True";
-    return "False";
-}
-
-#define log(x) std::cout << x << std::endl;
-
 int main()
 {
-
     ClockType alarm_clock, time_clock;
     char select_AM_PM;
     bool fast_mode = false, wrap_the_clock = false;
