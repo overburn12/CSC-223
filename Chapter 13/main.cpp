@@ -8,6 +8,7 @@ int main()
     char select_AM_PM;
     bool fast_mode = false, wrap_the_clock = false;
 
+    std::cout << "Alarm Clock Program - Chapter 13" << std::endl;
     std::cout << "Enter the following times using the format 00:00:00" << std::endl;
 
     std::cout << "Enter the current time: ";
@@ -16,7 +17,7 @@ int main()
     std::cout << "Enter an alarm time: ";
     std::cin >> alarm_clock;
 
-    std::cout << "Display AM/PM? Y / N > ";
+    std::cout << "Would you like to display AM/PM? Y / N > ";
     std::cin >> select_AM_PM;
 
     if(select_AM_PM == 'y' || select_AM_PM == 'Y')
@@ -25,7 +26,7 @@ int main()
         alarm_clock.set_AM_PM_mode(true);
     }
 
-    if( alarm_clock.get_total_seconds() - time_clock.get_total_seconds() > (45 * 60) )
+    if(alarm_clock.get_total_seconds() - time_clock.get_total_seconds() > (45 * 60))
     {
         fast_mode = true;
     }
@@ -56,7 +57,7 @@ int main()
         std::cout << "Current time: " << time_clock << std::endl;
         std::cout << "Alarm clock:  " << alarm_clock << std::endl;
     }
-    while( time_clock < alarm_clock || wrap_the_clock );
+    while(time_clock < alarm_clock || wrap_the_clock);
 
     std::cout << "----------------------\n";
     std::cout << "The alarm has gone off!";
