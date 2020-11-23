@@ -23,7 +23,10 @@ int ClockType::get_total_seconds() const
 
 std::string ClockType::get_string() const 
 {
-    std::string return_string;
+    std::string return_string = "";
+
+    //we use temp_hours so we can show AM/PM properly
+    //00 hours on the clock is shown as 12:00:00 AM
     int temp_hours = hours;
 
     if(show_AM_PM)
@@ -32,51 +35,53 @@ std::string ClockType::get_string() const
         {
             temp_hours -= 12;
         }
+
         if(temp_hours == 0)
         {
             temp_hours = 12;
         }
-
+        //reserve space for "12:00:00 AM"
         return_string.reserve(8 + 3);
     }
     else
     {
+        //reserve space for "00:00:00"
         return_string.reserve(8);
     }
     
     
     if(temp_hours < 10)
     {
-        return_string.append("0");
+        return_string += "0";
     }
 
-    return_string.append(std::to_string(temp_hours));
-    return_string.append(":");
+    return_string += std::to_string(temp_hours);
+    return_string += ":";
 
     if(minutes < 10)
     {
-        return_string.append("0");
+        return_string += "0";
     }
 
-    return_string.append(std::to_string(minutes));
-    return_string.append(":");
+    return_string += std::to_string(minutes);
+    return_string += ":";
 
     if(seconds < 10)
     {
-        return_string.append("0");
+        return_string += "0";
     }   
 
-    return_string.append(std::to_string(seconds));
+    return_string += std::to_string(seconds);
 
     if(show_AM_PM)
     {
         if(hours < 12)
         {
-            return_string.append(" AM");
+            return_string += " AM";
         }
         else
         {
-            return_string.append(" PM");
+            return_string += " PM";
         }
     }
 
@@ -84,6 +89,8 @@ std::string ClockType::get_string() const
 }
 
 void ClockType::set_hours(int hr)
+// Set the hours to hr
+// If the hours goes over 23, then roll the hours over as if it is the next day
 {
     if(hr < 0)
     {
@@ -103,6 +110,8 @@ void ClockType::set_hours(int hr)
 }
 
 void ClockType::set_minutes(int min)
+// Set the minutes to min
+// If the minutes goes over 59, then increase the hours
 {
     if(min < 0)
     {
@@ -120,6 +129,8 @@ void ClockType::set_minutes(int min)
 }
 
 void ClockType::set_seconds(int sec) 
+// Set the seconds to sec
+// If the seconds go over 59, then increase the minutes
 {
     if(sec < 0)
     {
@@ -153,6 +164,8 @@ void ClockType::copy(ClockType& copy_clock)
 
 std::ostream& operator<<(std::ostream &out, const ClockType &clock1)
 {
+    //we use temp_hours so we can show AM/PM properly
+    //00 hours on the clock is shown as 12:00:00 AM
     int temp_hours = clock1.get_hours();
 
     if (clock1.get_AM_PM_mode())
@@ -215,17 +228,23 @@ std::istream& operator>>(std::istream &in,  ClockType &clock1)
     if(data.size() == 0)
         return in;
 
+    //reset the clock so we dont add to any existing time
     clock1.reset();
 
+    //loop through the input string
     for(int i = 0; i < data.size(); i++)
     {
+        //if the char we are at is an actual number
+        //then add it to current_num
         if('0' <= data[i] && data[i] <= '9')
         {
             current_num *= 10;
             current_num += (data[i] - '0');
         }
 
-        if(data[i] == ':' || i+1 == data.size())
+        //if we are at a ':' or the last char in the string
+        //we need to push current_num to its proper slot in the clock
+        if(data[i] == ':' || i + 1 == data.size())
         {
             if(this_data_type == 0)
             {
@@ -246,6 +265,7 @@ std::istream& operator>>(std::istream &in,  ClockType &clock1)
             this_data_type++;
         }
     }
+
     return in;
 }
 
