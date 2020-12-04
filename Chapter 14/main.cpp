@@ -1,109 +1,74 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
 
+#define __PATH 'O' //not used
 #define __WALL '+'
-#define __PATH 'O'
-#define __START 'S'
+#define __START 'S' //not used
 #define __END 'E'
 #define __SOLVED '@'
 
-struct point{ int x, y; };
+#include "maze.cpp"
 
-struct maze_bundle{
-    char** maze_data;
-    bool** maze_check;
-    bool path_found;
-    int size_x, size_y, start_x, start_y, path_count;
-
-    maze_bundle(std::string file_name){
-        path_found = false;
-        path_count = 0;
-
-        std::ifstream in_file (file_name);
-        
-        in_file >> size_y >> size_x >> start_y >> start_x;
-
-        maze_data = new char*[size_y];
-        maze_check = new bool*[size_y];
-
-        for(int y = 0; y < size_y; y++){
-            maze_data[y] = new char[size_x];
-            maze_check[y] = new bool[size_x];
-
-            for(int x = 0; x < size_x; x++){
-                in_file >> maze_data[y][x];
-                maze_check[y][x] = false;
-
-                if(maze_data[y][x] == __PATH)
-                    path_count++;
-            }
-        }
- 
-        in_file.close();    
-    }
-
-    ~maze_bundle(){
-        for(int y = 0; y < size_y; y++){
-            delete [] maze_data[y];
-            delete [] maze_check[y];
-        }
-        delete [] maze_data;
-        delete [] maze_check;
-    }
-};
-
-
-void solve(maze_bundle &maze, std::vector<point> path, int x, int y){
-
-    if(x < 0 || x > maze.size_x - 1 || y < 0 || y > maze.size_y - 1)
-        return;
-
-    if(maze.path_found || maze.maze_check[y][x] || maze.maze_data[y][x] == __WALL)
-        return;
-
-    maze.maze_check[y][x] = true;
-    path.push_back({x , y});
-
-    if(maze.maze_data[y][x] == __END){
-        maze.path_found = true;
-
-        for(int i = 1; i < path.size() - 1; i++)
-            maze.maze_data[ path[i].y ][ path[i].x ] = __SOLVED;
-
-        return;
-    }
-
-    solve(maze, path, x, y - 1);
-    solve(maze, path, x, y + 1);
-    solve(maze, path, x - 1, y);
-    solve(maze, path, x + 1, y);
-}
-
-void print(maze_bundle &maze){
-    for(int y = 0; y < maze.size_y; y++){
-        for(int x = 0; x < maze.size_x; x++)
-            std::cout << maze.maze_data[y][x];
-        std::cout << std::endl;
-    }
-}
+void solve(maze_data &maze, maze_check &check, std::vector<point> path, int x, int y);
 
 int main(){
-    maze_bundle maze ("maze.txt");
-    std::vector<point> the_path;
-    
-    the_path.reserve(maze.path_count);
+    //the data for the maze layout
+    maze_data maze ("maze.txt");
 
-    std::cout << "\n\n\nUNSOLVED\n\n\n";
+    //the path check to see if we have visited a coordinate already and prevent repeats
+    maze_check check (maze.size);
 
-    print(maze);
+    //a blank starting point for building the solve algorithm path
+    std::vector<point> path;
 
-    std::cout << "\n\n\nSOLVING\n\n\n";
+    std::cout << "\n\n\nUNSOLVED:\n\n\n";
+    maze.print();
 
-    solve(maze, the_path, maze.start_x, maze.start_y);
+    solve(maze, check, path, maze.start.x, maze.start.y);
 
-    print(maze);
+    std::cout << "\n\n\nSOLVED:\n\n\n";
+    maze.print();
 
     return 0;
+}
+
+void solve(maze_data &maze, maze_check &check, std::vector<point> path, int x, int y){
+
+    //if we have already found a path, then exit this recursion branch
+    if(check.path_found) 
+        return;
+    
+    //if we are at an invalid coordinate, then exit this recursion branch
+    if(x < 0 || x > maze.size.x - 1 || y < 0 || y > maze.size.y - 1)
+        return;
+
+    //if this coordinate has already been checked, or it is a wall, then exit this recursion branch
+    if(check[y][x] || maze[y][x] == __WALL)
+        return;
+
+    //mark this coordinate as being checked by the solve algorithm
+    check[y][x] = true;
+
+    //add this coordinate to the current solve path
+    path.push_back({x , y});
+
+    //if we have found the end of the path
+    if(maze[y][x] == __END){
+
+        //flag that we have found a path, to exit all other ongoing solve branches
+        check.path_found = true;
+
+        //change the maze data to show the winning solve path
+        for(int i = 1; i < path.size() - 1; i++)
+            maze[ path[i].y ][ path[i].x ] = __SOLVED;
+            
+        return;
+    }
+
+    //branch is each direction: above, below, left, right
+    solve(maze, check, path, x, y - 1);
+    solve(maze, check, path, x, y + 1);
+    solve(maze, check, path, x - 1, y);
+    solve(maze, check, path, x + 1, y);
 }
