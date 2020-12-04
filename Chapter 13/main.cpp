@@ -23,8 +23,8 @@ int main()
     time_clock.set_AM_PM_mode(select_AM_PM == 'y' || select_AM_PM == 'Y');
     alarm_clock.set_AM_PM_mode(select_AM_PM == 'y' || select_AM_PM == 'Y');
 
-    //If the difference in the alarm clock and time clock is greater than 45 minutes then use fast mode
-    //or else you are going to be stuck waiting for a very long time
+    //If the difference in the alarm clock and time clock is greater than 45 minutes 
+    //then use fast mode or else you are going to be stuck waiting for a very long time
     fast_mode = alarm_clock.get_total_seconds() - time_clock.get_total_seconds() > 45 * 60;
 
     //if the alarm clock is before the time clock, we need to wait for the clock
