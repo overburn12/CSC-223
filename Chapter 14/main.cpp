@@ -53,7 +53,7 @@ struct maze_data{
             for(int x = 0; x < size_x; x++)
                 std::cout << data[y][x];
 
-            std::cout << vbar << '\n';
+            std::cout << vbar << std::endl;
         }
         std::cout << '\t' << corner << hbar << corner << std::endl;
     }
